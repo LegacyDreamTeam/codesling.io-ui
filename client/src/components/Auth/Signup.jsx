@@ -40,8 +40,8 @@ export default class Signup extends Component {
 
   render() {
     return (
-      <div className="login-form-container">
-        <form className="auth-form">
+      <div className="login-form-container2">
+        <form className="auth-form2">
           <Input
             name='email'
             type='email'

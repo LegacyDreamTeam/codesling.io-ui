@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import axios from 'axios';
-
-import AddChallenge from './AddChallenge/index.jsx';
+import EditorHeader from '../globals/EditorHeader';
 
 class Challenge extends Component {
   state = {
@@ -24,6 +23,8 @@ class Challenge extends Component {
   render() {
     return (
       <div>
+      <EditorHeader history={this.props.history} />
+      <br/>
         {this.state.challenges.map(challenge => {
           return (
             <ul>

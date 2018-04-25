@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import EditorHeader from '../globals/EditorHeader'
 
 import { HistoryList } from './HistoryList.jsx';
 
@@ -17,7 +18,9 @@ class History extends Component {
   render() {
     return (
       <div>
-        <HistoryList history={this.state.history}/>
+      <EditorHeader history={this.props.history} />
+      <br/>
+      <HistoryList history={this.state.history}/>
       </div>
     );
   }

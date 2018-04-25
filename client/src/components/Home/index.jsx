@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import randomstring from 'randomstring';
 import axios from 'axios';
 
+import EditorHeader from '../globals/EditorHeader';
 import Button from '../globals/Button';
 import Logo from '../globals/Logo';
 
@@ -47,9 +48,7 @@ class Home extends Component {
   render() {
     return (
       <div className="landing-page-container">
-        <Logo
-          className="landing-page-logo"
-        />
+      <EditorHeader history={this.props.history} />
         <br />
         <select onChange={(e) => this.handleChallengeSelect(e)}>
           {this.state.allChallenges.map(challenge => {

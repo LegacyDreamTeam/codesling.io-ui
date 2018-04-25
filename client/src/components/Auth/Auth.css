@@ -6,11 +6,11 @@
     display: block;
     margin: auto; }
 
-.login-form-container,
+.login-form-container2,
 .signup-form-container {
   width: 100%; }
 
-.auth-form {
+.auth-form2 {
   margin: auto;
   width: 100%;
   max-width: 400px; }

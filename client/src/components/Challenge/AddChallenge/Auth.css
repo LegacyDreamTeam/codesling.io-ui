@@ -10,10 +10,46 @@
 .signup-form-container {
   width: 100%; }
 
-.auth-form {
-  margin: auto;
-  width: 100%;
-  max-width: 400px; }
-
 .auth-link {
   margin-left: 5px; }
+
+/* below is from TA */
+
+  .auth-form {
+    margin: auto;
+    min-width: 90%; 
+    float: center;
+    clear: both;
+  }
+  
+  .left-form {
+    width: 40%;
+    float: left;
+  }
+  
+  .right-form {
+    width: 60%;
+    float: right;
+    min-height: 90%;
+    margin: 0 auto;
+  }
+  
+  .content-form {
+    width: 80%;
+    font-size: .9em;
+    display: block;
+    height: 200px;
+    border: none;
+    padding: 5px;
+    resize: none;
+  }
+
+  .test-form {
+    width: 80%;
+    font-size: .9em;
+    display: block;
+    height: 200px;
+    border: none;
+    padding: 5px;
+    resize: none;
+  }

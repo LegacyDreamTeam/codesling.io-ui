@@ -5,7 +5,7 @@ import axios from 'axios';
 import { throttle } from 'lodash';
 
 import Stdout from './StdOut/index.jsx';
-import EditorHeader from './EditorHeader';
+import EditorHeader from '../globals/EditorHeader';
 import Button from '../globals/Button';
 
 import 'codemirror/mode/javascript/javascript.js';

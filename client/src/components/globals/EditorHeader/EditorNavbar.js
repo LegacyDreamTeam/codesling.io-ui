@@ -1,6 +1,6 @@
 import React from 'react';
 import Logout from '../../Auth/Logout.jsx'
-import Button from '../../globals/Button';
+import Button from '../Button';
 
 const EditorNavbar = (props) => (
   <nav className="editor-navbar">
