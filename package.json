@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/codesling/codesling.io-ui#readme",
   "dependencies": {
-    "lodash": "^4.17.4"
+    "eslint-plugin-react": "^7.7.0",
+    "lodash": "^4.17.5"
   }
 }

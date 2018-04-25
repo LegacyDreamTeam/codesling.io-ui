@@ -28,7 +28,7 @@ $navbarHeight: 77px;
   .logo {
     margin: auto;
     width: 200px;
-
+    cursor: pointer;
     @include mq('md') {
       margin-left: $gutter;
     }
@@ -57,5 +57,6 @@ $navbarHeight: 77px;
   ul li {
     display: inline;
     margin-left: 30px;
+    cursor: pointer;
   }
 }

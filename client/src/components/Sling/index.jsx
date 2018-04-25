@@ -21,11 +21,11 @@ class SlingIndex extends Component {
   render() {
     if (this.props.location.state) {
       return (
-        <Sling socket={this.state.socket} player={this.socket.query.player} challenge={this.props.location.state.challenge}/>
+        <Sling socket={this.state.socket} player={this.socket.query.player} challenge={this.props.location.state.challenge} history={this.props.history}/>
       );
     } else {
       return (
-        <Sling socket={this.state.socket} challenge={{}}/>
+        <Sling socket={this.state.socket} challenge={{}} history={this.props.history}/>
       );
     }
   }

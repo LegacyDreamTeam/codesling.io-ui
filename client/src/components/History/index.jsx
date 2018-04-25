@@ -4,7 +4,7 @@ import axios from 'axios';
 import { HistoryList } from './HistoryList.jsx';
 
 class History extends Component {
-  state = { 
+  state = {
     history: []
   }
 

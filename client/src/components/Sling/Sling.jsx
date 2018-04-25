@@ -79,11 +79,11 @@ class Sling extends Component {
   }
 
   render() {
-    const { socket, player } = this.props;
+    const { socket, player, history } = this.props;
     if (player === 1) {
       return (
         <div className="sling-container">
-          <EditorHeader />
+          <EditorHeader history={history} />
           <div className="code1-editor-container">
             <CodeMirror
               editorDidMount={this.initializeEditor}
@@ -126,7 +126,7 @@ class Sling extends Component {
     } else {
       return (
         <div className="sling-container">
-          <EditorHeader />
+          <EditorHeader history={this.props.history} />
           <div className="code1-editor-container">
             <CodeMirror
               editorDidMount={this.initializeEditor}

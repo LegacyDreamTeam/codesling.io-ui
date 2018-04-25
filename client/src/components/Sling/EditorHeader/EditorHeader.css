@@ -13,7 +13,8 @@
   display: flex; }
   .logo-container .logo {
     margin: auto;
-    width: 200px; }
+    width: 200px;
+    cursor: pointer; }
     @media (min-width: 768px) {
       .logo-container .logo {
         margin-left: 30px; } }
@@ -34,4 +35,5 @@
         margin-right: 30px; } }
   .editor-navbar ul li {
     display: inline;
-    margin-left: 30px; }
+    margin-left: 30px; 
+    cursor: pointer; }

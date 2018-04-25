@@ -15,8 +15,10 @@ class Challenge extends Component {
 
   fetchAllChallenges = async () => {
     const id = localStorage.getItem('id');
-    const { data } = await axios.get(`http://localhost:3396/api/usersChallenges/${id}`)
-    this.setState({ challenges: data.rows });
+    const { data } = await axios.get(`http://localhost:3396/api/usersChallenges/${id}`);
+    if(data.length) {
+      this.setState({ challenges: data });
+    }
   }
 
   render() {
@@ -24,10 +26,13 @@ class Challenge extends Component {
       <div>
         {this.state.challenges.map(challenge => {
           return (
-            <div>
+            <ul>
+              <li>title: {challenge.title} </li>
               <li>content: {challenge.content} </li>
               <li>difficulty: {challenge.difficulty} </li>
-            </div>
+              <li>rating: {challenge.rating} </li>
+              <li></li>
+            </ul>
           )
         })}
       </div>

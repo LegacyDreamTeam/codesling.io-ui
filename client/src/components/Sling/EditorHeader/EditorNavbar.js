@@ -1,11 +1,13 @@
 import React from 'react';
+import Logout from '../../Auth/Logout.jsx'
+import Button from '../../globals/Button';
 
-const EditorNavbar = () => (
+const EditorNavbar = (props) => (
   <nav className="editor-navbar">
     <ul>
-      <li>Item 1</li>
-      <li>Item 2</li>
-      <li>Item 3</li>
+      <li onClick={() => props.history.push('/challenge')}>My Challenges</li>
+      <li onClick={() => props.history.push('/history')}>My History</li>
+      <Logout history={props.history}/>
     </ul>
   </nav>
 );

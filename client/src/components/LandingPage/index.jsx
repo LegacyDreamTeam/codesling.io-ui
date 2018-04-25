@@ -42,17 +42,3 @@ class LandingPage extends Component {
 }
 
 export default LandingPage;
-
-
-{/* <div className="landing-page-container">
-        <button 
-          onClick={() => this.props.history.push('/login')}
-          >
-          Login
-        </button>  
-        <button 
-          onClick={() => this.props.history.push('/signup')}
-        >
-          Signup
-        </button>
-      </div> */}
