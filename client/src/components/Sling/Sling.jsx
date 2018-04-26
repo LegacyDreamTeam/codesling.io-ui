@@ -98,8 +98,9 @@ class Sling extends Component {
           </div>
           <div className="stdout-container">
               {this.state.challenge.title || this.props.challenge.title}
-              <br/>
+              <br/> <br/>
               {this.state.challenge.content || this.props.challenge.content}
+              <br/> <br/> <br/> <br/>
             <Stdout text={this.state.stdout}/>
             <Button
               className="run-btn"

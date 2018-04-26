@@ -18,15 +18,30 @@ class Home extends Component {
 
    async componentDidMount() {
     const { data } = await axios.get(`http://localhost:3396/api/challenges`)
-    this.setState({ allChallenges: data });
+    this.setState({
+      allChallenges: data,
+      selectedChallenge: JSON.stringify(data[0]),
+     });
    }
 
   randomSlingId = () => {
     slingId = `${randomstring.generate()}`;
   }
 
-  handleDuelClick = () => {
+  handleDuelClick = async () => {
     this.randomSlingId();
+    var params = {
+      slingId: slingId,
+      challengeId: JSON.parse(this.state.selectedChallenge).id,
+    }
+    // try {
+    //   const returnedSlingId = await axios.get('http://localhost:3396/api/challenges/challengeTracker', params);
+    //   console.log(returnedSlingId)
+    // }
+    // catch(err) {
+    //   throw new Error(err);
+    // }
+    // then set global slingId to the above after data is received back
     this.props.history.push({
       pathname: `/${slingId}`,
       state: {
