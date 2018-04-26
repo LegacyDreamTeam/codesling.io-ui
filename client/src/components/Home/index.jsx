@@ -13,7 +13,8 @@ let slingId;
 class Home extends Component {
   state = {
     allChallenges: [],
-    selectedChallenge: {}
+    selectedChallenge: {}, 
+    player1: ''
    }
 
    async componentDidMount() {
@@ -34,18 +35,24 @@ class Home extends Component {
       slingId: slingId,
       challengeId: JSON.parse(this.state.selectedChallenge).id,
     }
-    // try {
-    //   const returnedSlingId = await axios.get('http://localhost:3396/api/challenges/challengeTracker', params);
-    //   console.log(returnedSlingId)
-    // }
-    // catch(err) {
-    //   throw new Error(err);
-    // }
-    // then set global slingId to the above after data is received back
+    try {
+      const returnedSlingId = await axios.get('http://localhost:3396/api/challenges/challengeTracker', {params});
+      console.log(returnedSlingId)
+      var player1 = slingId === returnedSlingId.data ? true : false; 
+      this.setState({player1: player1});
+      console.log('PLAYER1', player1)
+      slingId = returnedSlingId.data; 
+
+    }
+    catch(err) {
+      throw new Error(err);
+    }
+
     this.props.history.push({
       pathname: `/${slingId}`,
       state: {
-        challenge: this.state.selectedChallenge
+        // challenge: this.state.selectedChallenge, 
+        player1: this.state.player1
       }
     });
   }
