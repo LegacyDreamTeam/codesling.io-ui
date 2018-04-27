@@ -42,7 +42,7 @@ class Home extends Component {
       console.log(returnedSlingId)
       var player1 = slingId === returnedSlingId.data ? true : false; 
       this.setState({player1: player1});
-      console.log('PLAYER1', player1)
+      console.log('PLAYER1', this.state.player1)
       slingId = returnedSlingId.data; 
 
     }

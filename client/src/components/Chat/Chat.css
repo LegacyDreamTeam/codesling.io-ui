@@ -1,0 +1,41 @@
+.chat-box {
+  border-radius: 4px;
+  height: 400px;
+  width: 90%;
+  margin-top: 100px; 
+  margin-left: 22px;
+}
+
+.messages-box {
+  height: 310px;
+  border-radius: 4px; 
+  background-color: #151515;
+  padding-top: 5px;
+  padding-bottom: 5px; 
+}
+
+.each-msg {
+  height: 20px;
+  background-color: #262626;
+  color: white; 
+  width: 50%;
+  border-radius: 4px; 
+  /* padding-top: 1px;  */
+  /* margin-bottom: 50px;  */
+}
+
+.send-msg {
+  height: 90px;
+  border-radius: 4px; 
+  text-align: left;
+  padding-bottom: 25px;
+}
+
+.button {
+  background-color: #c24040;
+  border-color: #c24040; 
+  color: white; 
+  width: 100%;
+  padding: 7px 7px;
+  border-radius: 4px;
+}
