@@ -25,7 +25,7 @@ deploy:
   skip_cleanup: true
   on: &1
     repo: LegacyDreamTeam/codesling.io-ui
-    branch: travis
+    branch: travis, master
   bucket: legacy-s3
   region: us-west-1
 - provider: codedeploy
