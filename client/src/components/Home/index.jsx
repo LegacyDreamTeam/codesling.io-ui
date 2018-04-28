@@ -13,24 +13,49 @@ let slingId;
 class Home extends Component {
   state = {
     allChallenges: [],
-    selectedChallenge: {}
+    selectedChallenge: {}, 
+    player1: '',
+    waitlist: {},
    }
 
-   async componentDidMount() {
-    const { data } = await axios.get(`http://localhost:3396/api/challenges`)
-    this.setState({ allChallenges: data });
+   async componentDidMount() {  
+    const { data  } = await axios.get(`http://localhost:3396/api/challenges`);
+    this.setState({
+      allChallenges: data.allChallenges.rows,
+      selectedChallenge: JSON.stringify(data.allChallenges.rows[0]),
+      waitlist: data.waitlist,
+     });
    }
 
   randomSlingId = () => {
     slingId = `${randomstring.generate()}`;
   }
 
-  handleDuelClick = () => {
+  handleDuelClick = async () => {
     this.randomSlingId();
+    var params = {
+      slingId: slingId,
+      challengeId: JSON.parse(this.state.selectedChallenge).id,
+    }
+    try {
+      const returnedSlingId = await axios.get('http://localhost:3396/api/challenges/challengeTracker', {params});
+      console.log(returnedSlingId)
+      var player1 = slingId === returnedSlingId.data ? true : false; 
+      this.setState({player1: player1});
+      console.log('PLAYER1', player1)
+      slingId = returnedSlingId.data; 
+
+    }
+    catch(err) {
+      throw new Error(err);
+    }
+
     this.props.history.push({
       pathname: `/${slingId}`,
       state: {
-        challenge: this.state.selectedChallenge
+        challenge: this.state.selectedChallenge,
+        player1: this.state.player1,
+        challengeId: params.challengeId,
       }
     });
   }
@@ -76,6 +101,7 @@ class Home extends Component {
           text="Duel"
           onClick={() => this.handleDuelClick()}
         />
+        {/* map through waitlist and for every string show a new component that lets you join that room */}
       </div>
     );
   }

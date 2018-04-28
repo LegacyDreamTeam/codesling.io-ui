@@ -6,26 +6,29 @@ import Sling from './Sling.jsx';
 class SlingIndex extends Component {
   state = { 
     socket: null,
+
    }
 
   componentWillMount() {
+    console.log(this.props.location.state)
     this.socket = io('http://localhost:4155', {
       query: {
         roomId: this.props.location.pathname.slice(1),
-        player: this.props.location.state ? 1 : 2
+        player: this.props.location.state.player1 === true ? 1 : 2
       }
     });
     this.setState({ socket: this.socket });
   }
 
   render() {
+    console.log('LOCATION.STATE', this.props.location.state);
     if (this.props.location.state) {
       return (
-        <Sling socket={this.state.socket} player={this.socket.query.player} challenge={this.props.location.state.challenge} history={this.props.history}/>
+        <Sling socket={this.state.socket} challengeId={this.props.location.state.challengeId} roomId={this.props.location.pathname.slice(1)} player={this.socket.query.player} challenge={this.props.location.state.challenge} history={this.props.history}/>
       );
     } else {
       return (
-        <Sling socket={this.state.socket} challenge={{}} history={this.props.history}/>
+        <Sling socket={this.state.socket} challengeId={this.props.location.state.challengeId} roomId={this.props.location.pathname.slice(1)} challenge={{}} player={this.socket.query.player} history={this.props.history}/>
       );
     }
   }

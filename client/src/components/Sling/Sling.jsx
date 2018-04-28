@@ -13,6 +13,16 @@ import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/base16-dark.css';
 import './Sling.css';
 
+let windowId;
+let windowChallengeId;
+
+window.onbeforeunload =  function() {
+  if(windowId) {
+    axios.post('http://localhost:3396/api/challenges/leavingPage', { id: windowId, challengeId: windowChallengeId });
+    return null;
+  }
+}
+
 class Sling extends Component {
   state = {
     id: null,
@@ -20,15 +30,27 @@ class Sling extends Component {
     challengerText: null,
     text: '',
     challenge: '',
-    stdout: ''
+    stdout: '',
+    start: false,
+    challengerId: null,
+    gameOver: false,
+  }
+  
+
+  componentWillUnmount() {
+    axios.post('http://localhost:3396/api/challenges/leavingPage', { id: windowId, challengeId: windowChallengeId });
   }
 
   componentDidMount() {
-    const { socket, challenge, player } = this.props;
+    const { socket, challenge, player, roomId, challengeId } = this.props;
     const startChall = typeof challenge === 'string' ? JSON.parse(challenge) : {}
+    console.log(startChall);
+    windowId = roomId;
+    windowChallengeId = challengeId;
     socket.on('connect', () => {
       socket.emit('client.ready', { challenge: startChall, player });
     });
+
     
     socket.on('server.initialState', ({ id, playerOneText, playerTwoText, challenge }) => {
       this.setState({
@@ -39,6 +61,17 @@ class Sling extends Component {
       });
     });
 
+    socket.on('server.startGame', ({ start }) => {
+      this.setState({ start: start });
+      socket.emit('client.getUser', { userId: localStorage.id });
+    });
+
+    socket.on('server.PlayerIds', ({ userId }) => {
+      if (userId !== localStorage.id) {
+        this.setState({ challengerId: userId });
+      }
+    });
+
     socket.on('serverOne.changed', ({ text, player }) => {
       this.setState({ ownerText: text });
     });
@@ -47,21 +80,56 @@ class Sling extends Component {
       this.setState({ challengerText: text });
     });
 
-    socket.on('server.run', ({ stdout, player }) => {
+    socket.on('server.run', ({ stdout, player, winner }) => {
       this.props.player === player ? this.setState({ stdout }) : null;
+      if (winner) {
+        this.onWin(player);
+      }
     });
 
     window.addEventListener('resize', this.setEditorSize);
   }
 
   submitCode = () => {
-    const { socket, player } = this.props;
-    const { ownerText, challengerText } = this.state;
-    if (player === 1) {
-      socket.emit('client.run', { text: ownerText, player });
+    if(!this.state.gameOver) {
+      const { socket, player, challenge } = this.props;
+      const { ownerText, challengerText } = this.state;
+      if (player === 1) {
+        socket.emit('client.run', { text: ownerText, player, challenge });
+      } else {
+        socket.emit('client.run', { text: challengerText, player, challenge });
+      }
     } else {
-      socket.emit('client.run', { text: challengerText, player });
+      alert('The game is already over. Please play again!');
     }
+  }
+
+  onWin = async (player) => { // player is either 1 or 2
+    var iWin = player === this.props.player ? 1 : 0;
+    var body = {
+      outcome: iWin,
+      time: new Date(),
+      clout: iWin ? 5 : -1,
+      user_id: localStorage.id,
+      challenger_id: this.state.challengerId,
+      challenge_id: this.props.challengeId,
+    }
+    console.log(body)
+    try {
+      const data = await axios.post(`http://localhost:3396/api/history/addHistory`, body);
+      this.setState({ gameOver: true });
+      if (iWin) {
+        alert('Congratulations! Your solution is correct and you win the game!');
+      } else {
+        alert(`Your opponent has won. Please try another challenge!
+
+              "I've failed over and over and over again in my life.
+              And that is why I succeed." - Michael Jordan`);
+      }
+    } catch (err) {
+      throw new Error(err);
+    }
+    // make sure to kill the game so that no more submissions can happen
   }
 
   handleChange = throttle((editor, metadata, value) => {
@@ -97,9 +165,16 @@ class Sling extends Component {
               />
           </div>
           <div className="stdout-container">
+            { this.state.start ?
+            <div>
               {this.state.challenge.title || this.props.challenge.title}
               <br/>
               {this.state.challenge.content || this.props.challenge.content}
+            </div> :
+            <div>
+              Waiting for opponent...
+            </div>
+            }
             <Stdout text={this.state.stdout}/>
             <Button
               className="run-btn"
