@@ -3,6 +3,7 @@ import CodeMirror from 'react-codemirror2';
 import io from 'socket.io-client/dist/socket.io.js';
 import axios from 'axios';
 import { throttle } from 'lodash';
+import Chat from '../Chat/ChatUser.jsx'; 
 
 import Stdout from './StdOut/index.jsx';
 import EditorHeader from '../globals/EditorHeader';
@@ -49,6 +50,7 @@ class Sling extends Component {
     windowChallengeId = challengeId;
     socket.on('connect', () => {
       socket.emit('client.ready', { challenge: startChall, player });
+
     });
 
     
@@ -59,6 +61,7 @@ class Sling extends Component {
         challengerText: playerTwoText,
         challenge
       });
+      console.log('ID', id)
     });
 
     socket.on('server.startGame', ({ start }) => {
@@ -73,11 +76,11 @@ class Sling extends Component {
     });
 
     socket.on('serverOne.changed', ({ text, player }) => {
-      this.setState({ ownerText: text });
+      this.setState({ ownerText: text, player1: player});
     });
 
     socket.on('serverTwo.changed', ({ text, player }) => {
-      this.setState({ challengerText: text });
+      this.setState({ challengerText: text, player2: player });
     });
 
     socket.on('server.run', ({ stdout, player, winner }) => {
@@ -183,6 +186,17 @@ class Sling extends Component {
               color="white"
               onClick={() => this.submitCode()}
             />
+            <Button
+              className="run-btn"
+              text="Add Friend"
+              backgroundColor="red"
+              color="white"
+              onClick={() => this.submitCode()}
+            />
+            <div></div>
+            <div >
+              <Chat socket={socket} id={this.state.id} player={player}/> 
+            </div>
           </div>
           <div className="code2-editor-container">
             <CodeMirror 
@@ -226,6 +240,15 @@ class Sling extends Component {
               color="white"
               onClick={() => this.submitCode()}
             />
+            <button
+              className="run-btn"
+              text="Add Friend"
+              backgroundColor="red"
+              color="white"
+              onClick={() => this.submitCode()}>Add Friend</button>
+            <div >
+              <Chat socket={socket} id={this.state.id} player={player}/> 
+            </div>
           </div>
           <div className="code2-editor-container">
             <CodeMirror 

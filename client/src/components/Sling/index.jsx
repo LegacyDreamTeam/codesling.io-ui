@@ -6,11 +6,9 @@ import Sling from './Sling.jsx';
 class SlingIndex extends Component {
   state = { 
     socket: null,
-
    }
 
   componentWillMount() {
-    console.log(this.props.location.state)
     this.socket = io('http://localhost:4155', {
       query: {
         roomId: this.props.location.pathname.slice(1),
@@ -21,7 +19,6 @@ class SlingIndex extends Component {
   }
 
   render() {
-    console.log('LOCATION.STATE', this.props.location.state);
     if (this.props.location.state) {
       return (
         <Sling socket={this.state.socket} challengeId={this.props.location.state.challengeId} roomId={this.props.location.pathname.slice(1)} player={this.socket.query.player} challenge={this.props.location.state.challenge} history={this.props.history}/>
