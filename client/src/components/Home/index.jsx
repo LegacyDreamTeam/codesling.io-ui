@@ -14,14 +14,16 @@ class Home extends Component {
   state = {
     allChallenges: [],
     selectedChallenge: {}, 
-    player1: ''
+    player1: '',
+    waitlist: {},
    }
 
-   async componentDidMount() {
-    const { data } = await axios.get(`http://localhost:3396/api/challenges`)
+   async componentDidMount() {  
+    const { data  } = await axios.get(`http://localhost:3396/api/challenges`);
     this.setState({
-      allChallenges: data,
-      selectedChallenge: JSON.stringify(data[0]),
+      allChallenges: data.allChallenges.rows,
+      selectedChallenge: JSON.stringify(data.allChallenges.rows[0]),
+      waitlist: data.waitlist,
      });
    }
 
@@ -51,8 +53,9 @@ class Home extends Component {
     this.props.history.push({
       pathname: `/${slingId}`,
       state: {
-        // challenge: this.state.selectedChallenge, 
-        player1: this.state.player1
+        challenge: this.state.selectedChallenge,
+        player1: this.state.player1,
+        challengeId: params.challengeId,
       }
     });
   }
@@ -98,6 +101,7 @@ class Home extends Component {
           text="Duel"
           onClick={() => this.handleDuelClick()}
         />
+        {/* map through waitlist and for every string show a new component that lets you join that room */}
       </div>
     );
   }

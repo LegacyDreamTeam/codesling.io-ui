@@ -20,7 +20,7 @@ class History extends Component {
       <div>
       <EditorHeader history={this.props.history} />
       <br/>
-      <HistoryList history={this.state.history}/>
+      <HistoryList history={this.state.history} />
       </div>
     );
   }
