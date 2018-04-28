@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import randomstring from 'randomstring';
 import axios from 'axios';
+import NewRoomButton from './NewRoomButton.jsx'
 
 import EditorHeader from '../globals/EditorHeader';
 import Button from '../globals/Button';
@@ -15,15 +16,26 @@ class Home extends Component {
     allChallenges: [],
     selectedChallenge: {}, 
     player1: '',
-    waitlist: {},
+    waitlist: [],
    }
 
    async componentDidMount() {  
     const { data  } = await axios.get(`http://localhost:3396/api/challenges`);
+    var arr = [];
+    for (var key in data.waitlist) {
+      if (data.waitlist[key] !== '') {
+        arr.push({
+          roomId: data.waitlist[key],
+          challengeId: key,
+          challengeTitle: data.allChallenges.rows[key - 1].title,
+          challenge: JSON.stringify(data.allChallenges.rows[key - 1]),
+        });
+      }
+    }
     this.setState({
       allChallenges: data.allChallenges.rows,
       selectedChallenge: JSON.stringify(data.allChallenges.rows[0]),
-      waitlist: data.waitlist,
+      waitlist: arr,
      });
    }
 
@@ -101,7 +113,10 @@ class Home extends Component {
           text="Duel"
           onClick={() => this.handleDuelClick()}
         />
-        {/* map through waitlist and for every string show a new component that lets you join that room */}
+        <br/>
+        Join any of the below and play immediately!
+        <br/> <br/>
+        {this.state.waitlist.map((r) => <NewRoomButton challenge ={r.challenge} roomId={r.roomId} challengeId={r.challengeId} challengeTitle={r.challengeTitle} history={this.props.history} />)}
       </div>
     );
   }
