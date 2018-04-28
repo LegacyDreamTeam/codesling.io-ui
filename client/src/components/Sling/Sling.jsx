@@ -61,7 +61,7 @@ class Sling extends Component {
         challengerText: playerTwoText,
         challenge
       });
-      console.log('ID ID ID', this.state.id)
+      console.log('ID', id)
     });
 
     socket.on('server.startGame', ({ start }) => {
@@ -186,6 +186,14 @@ class Sling extends Component {
               color="white"
               onClick={() => this.submitCode()}
             />
+            <Button
+              className="run-btn"
+              text="Add Friend"
+              backgroundColor="red"
+              color="white"
+              onClick={() => this.submitCode()}
+            />
+            <div></div>
             <div >
               <Chat socket={socket} id={this.state.id} player={player}/> 
             </div>
@@ -232,6 +240,12 @@ class Sling extends Component {
               color="white"
               onClick={() => this.submitCode()}
             />
+            <button
+              className="run-btn"
+              text="Add Friend"
+              backgroundColor="red"
+              color="white"
+              onClick={() => this.submitCode()}>Add Friend</button>
             <div >
               <Chat socket={socket} id={this.state.id} player={player}/> 
             </div>

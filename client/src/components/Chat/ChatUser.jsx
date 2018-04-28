@@ -10,27 +10,26 @@ class Chat extends React.Component {
       currentMsg: '', 
       messages: [],
       player: this.props.player
+      
     }
     this.handleSubmit= this.handleSubmit.bind(this); 
   }
   
-  // componentDidMount() { 
-  //   this.socket.on('receive-message', (msg) => {
-  //     console.log(msg);
-  //     let messages = context.state.messages; 
-  //     messages.push(`${msg.user.toUpperCase()}:  ${msg.message}`);
-  //     this.setState({messages: messages});
-  //   });
-  // }
   componentDidMount() {
     const { socket, player } = this.props; 
     this.setState({player: player})
     socket.on('server.message', (msg) => {
-      console.log('FROM SERVER =>', msg)
       let messages = this.state.messages; 
-      messages.push(`Player${msg.player} : ${msg.msg}`);
+      messages.push(`${msg.player}  ${msg.username} : ${msg.msg}`);
       this.setState({messages: messages});
+      console.log('Messages', this.state.messages);
+      console.log('Props', this.props);
     });
+    
+  }
+  
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
 
   handleCurrentMsg(e) {
@@ -39,9 +38,10 @@ class Chat extends React.Component {
 
   handleSubmit(event) {
     const { socket } = this.props;
-    socket.emit('client.message', {player: this.state.player, msg: this.state.currentMsg });
+    socket.emit('client.message', {player: this.state.player, username: localStorage.username, msg: this.state.currentMsg });
     this.setState({currentMsg: ''});
     event.preventDefault(); 
+    this.scrollToBottom();
   }
 
   render() {
@@ -52,15 +52,26 @@ class Chat extends React.Component {
             this.state.messages.length > 0 ? 
               (
                 this.state.messages.map(msg =>
-                  <div className='each-msg'> 
-                    {msg}
+                  Number(msg[0][0]) === 1 ? 
+                  (
+                  <div className='each-msg-player1 wordwrap'> 
+                    <span className='inner wordwrap'>{msg.slice(3)}</span>
                   </div>
+                  )
+                  :
+                  (
+                  <div className='each-msg-player2 wordwrap'> 
+                    <div className='inner wordwrap'>{msg.slice(3)}</div>
+                  </div>
+                  )
                 ))
               :
               (
                 null
               )
           }
+        <div style={{ float:"left", clear: "both", marginTop: "50px"}} 
+          ref={(el) => { this.messagesEnd = el; }}/>  
         </div>
         <div className='send-msg'>
           <form onSubmit={this.handleSubmit}>
