@@ -1,4 +1,4 @@
-// require('dotenv').config();
+require('dotenv').config();
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -6,7 +6,11 @@ const webpack = require('webpack');
 
 const options = {
   devTool: 'source-map',
-  uglify: {}
+  uglify: {},
+  watch: true
+};
+if (process.env.NODE_ENV === 'PRODUCTION') {
+  options.watch = false;
 }
 
 // if (process.env.NODE_ENV === 'production') {
@@ -22,7 +26,7 @@ module.exports = {
   output: {
     filename: './public/bundle.js'
   },
-  watch: true,
+  watch: options.watch,
   devtool: options.devTool,
   module: {
     loaders: [
