@@ -1,0 +1,40 @@
+language: node_js
+node_js:
+- '8'
+cache:
+  directories:
+    - node_modules
+    - client/node_modules
+    - server/node_modules
+
+install:
+  - yarn
+  - yarn buildEnv
+  - yarn setup:server
+  - yarn setup:client
+script:
+  - find . -type d -name "*node_modules*" -prune -o -type f -print | zip latest-ui.zip -@
+  - mkdir -p upload_dir
+  - mv latest-ui.zip upload_dir/latest-ui.zip
+
+deploy:
+- provider: s3
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  local_dir: upload_dir
+  skip_cleanup: true
+  on: &1
+    repo: LegacyDreamTeam/codesling.io-ui
+    branch: travis
+  bucket: legacy-s3
+  region: us-west-1
+- provider: codedeploy
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: legacy-s3
+  key: latest-ui.zip
+  bundle_type: zip
+  application: legacy-ui-app
+  deployment_group: legacy-ui-app-deploy
+  region: us-west-1
+  on: *1

@@ -1,0 +1,19 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /home/ec2-user/legacy-ui
+permissions:
+  - object: /home/ec2-user
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+hooks:
+  AfterInstall:
+    - location: scripts/after_install.sh
+      timeout: 1200
+      runas: ec2-user
+  ApplicationStart:
+    - location: scripts/application_start.sh
+      timeout: 1200
+      runas: ec2-user
